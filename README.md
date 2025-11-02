@@ -234,7 +234,7 @@ The FSM is designed to be easily extensible:
 
 Experience the interactive traffic light FSM demo:
 
-**🌐 [Live Demo](https://traffic-fsm-demo-kypythons-projects.vercel.app)** - Interactive web demonstration
+**🌐 [Live Demo](https://traffic-fsm-demo.vercel.app)** - Interactive web demonstration
 
 ### Local Development
 
@@ -256,7 +256,7 @@ npm test
 
 This project is configured for automatic deployment to Vercel:
 - **Repository**: [GitHub - traffic-light-fsm](https://github.com/KyPython/traffic-light-fsm)
-- **Live Demo**: [Vercel Deployment](https://traffic-fsm-demo-kypythons-projects.vercel.app)
+- **Live Demo**: [Vercel Deployment](https://traffic-fsm-demo.vercel.app)
 
 ## 📋 Requirements Met
 
