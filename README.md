@@ -230,6 +230,34 @@ The FSM is designed to be easily extensible:
 - **Add actions**: Use `action` callbacks for side effects during transitions
 - **Multiple FSMs**: Create multiple StateMachine instances for complex systems
 
+## 🚀 Live Demo
+
+Experience the interactive traffic light FSM demo:
+
+**🌐 [Live Demo](https://traffic-light-fsm-kypythons-projects.vercel.app)** - Interactive web demonstration
+
+### Local Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+
+# Build TypeScript
+npm run build
+
+# Run CLI demo
+npm test
+```
+
+### Deployment
+
+This project is configured for automatic deployment to Vercel:
+- **Repository**: [GitHub - traffic-light-fsm](https://github.com/KyPython/traffic-light-fsm)
+- **Live Demo**: [Vercel Deployment](https://traffic-light-fsm-kypythons-projects.vercel.app)
+
 ## 📋 Requirements Met
 
 ✅ **Structured Implementation** - Clean interfaces and separation of concerns  
