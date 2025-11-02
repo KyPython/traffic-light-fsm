@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Light FSM Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .demo-section {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .traffic-light {
+            background: #333;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .light-housing {
+            background: #222;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .light {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 10px auto;
+            border: 3px solid #555;
+            transition: all 0.3s ease;
+        }
+
+        .light.red { background: #4a1a1a; }
+        .light.red.active { 
+            background: #ff4444; 
+            box-shadow: 0 0 20px #ff4444, 0 0 40px #ff4444;
+        }
+
+        .light.yellow { background: #4a4a1a; }
+        .light.yellow.active { 
+            background: #ffff44; 
+            box-shadow: 0 0 20px #ffff44, 0 0 40px #ffff44;
+        }
+
+        .light.green { background: #1a4a1a; }
+        .light.green.active { 
+            background: #44ff44; 
+            box-shadow: 0 0 20px #44ff44, 0 0 40px #44ff44;
+        }
+
+        .controls {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .control-group {
+            margin-bottom: 25px;
+        }
+
+        .control-group h3 {
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.emergency {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-panel {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+
+        .log-panel {
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            padding: 5px;
+            border-left: 3px solid #667eea;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .timer-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .demo-section {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .info-section {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-section h2 {
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .feature h4 {
+            color: #ffff88;
+            margin-bottom: 10px;
+        }
+
+        .links-section {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .links-section h3 {
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .link-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin: 0 10px 10px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .link-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🚦 Traffic Light FSM Demo</h1>
+            <p>Interactive demonstration of a TypeScript Finite State Machine</p>
+        </header>
+
+        <div class="demo-section">
+            <div class="traffic-light">
+                <h3>Traffic Light</h3>
+                <div class="light-housing">
+                    <div class="light red" id="redLight"></div>
+                    <div class="light yellow" id="yellowLight"></div>
+                    <div class="light green" id="greenLight"></div>
+                </div>
+                <div class="timer-display" id="timerDisplay">--:--</div>
+                <div class="status-panel">
+                    <div class="status-row">
+                        <span>Current State:</span>
+                        <span id="currentState">NOT_STARTED</span>
+                    </div>
+                    <div class="status-row">
+                        <span>Running:</span>
+                        <span id="isRunning">❌</span>
+                    </div>
+                    <div class="status-row">
+                        <span>Cycle Count:</span>
+                        <span id="cycleCount">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="control-group">
+                    <h3>System Control</h3>
+                    <div class="button-group">
+                        <button id="startBtn">▶️ Start</button>
+                        <button id="stopBtn">⏹️ Stop</button>
+                        <button id="resetBtn">🔄 Reset</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h3>Manual Override</h3>
+                    <div class="button-group">
+                        <button id="forceRedBtn">🔴 Force Red</button>
+                        <button id="forceYellowBtn">🟡 Force Yellow</button>
+                        <button id="forceGreenBtn">🟢 Force Green</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h3>Emergency</h3>
+                    <div class="button-group">
+                        <button id="emergencyBtn" class="emergency">🚨 Emergency Override</button>
+                    </div>
+                </div>
+
+                <div class="log-panel">
+                    <h4>System Log</h4>
+                    <div id="logContainer"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>🏗️ FSM Architecture Features</h2>
+            <div class="features">
+                <div class="feature">
+                    <h4>🎯 State Design Pattern</h4>
+                    <p>Each state (Red, Green, Yellow) is implemented as a separate class following the Single Responsibility Principle.</p>
+                </div>
+                <div class="feature">
+                    <h4>⚡ Event-Driven</h4>
+                    <p>Transitions are triggered by events (TIMER_EXPIRED, EMERGENCY_OVERRIDE) with optional guard conditions.</p>
+                </div>
+                <div class="feature">
+                    <h4>🔧 Reusable Engine</h4>
+                    <p>Generic StateMachine class can be used for any state-based system, not just traffic lights.</p>
+                </div>
+                <div class="feature">
+                    <h4>🛡️ Error Handling</h4>
+                    <p>Robust validation ensures states exist, FSM is started, and transitions are valid.</p>
+                </div>
+                <div class="feature">
+                    <h4>📊 Observability</h4>
+                    <p>Built-in debugging, state history tracking, and transition capability checking.</p>
+                </div>
+                <div class="feature">
+                    <h4>⏱️ Time-Based Logic</h4>
+                    <p>Delta-time updates enable smooth timing and frame-rate independent operation.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="links-section">
+            <h3>🔗 Project Links</h3>
+            <a href="https://github.com/USERNAME/traffic-light-fsm" class="link-button" target="_blank">
+                📚 GitHub Repository
+            </a>
+            <a href="https://traffic-light-fsm.vercel.app" class="link-button" target="_blank">
+                🚀 Live Demo
+            </a>
+        </div>
+    </div>
+
+    <script type="module" src="./js/main.js"></script>
+</body>
+</html>
