@@ -44,4 +44,4 @@ coverage/
 *.temp
 
 # Vercel
-.vercel
+.vercel.vercel

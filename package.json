@@ -1,5 +1,5 @@
 {
-  "name": "traffic-light-fsm",
+  "name": "traffic-fsm",
   "version": "1.0.0",
   "description": "A TypeScript-based Finite State Machine implementation for Traffic Light Controller with interactive web demo",
   "main": "dist/index.js",
