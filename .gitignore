@@ -45,3 +45,21 @@ coverage/
 
 # Vercel
 .vercel.vercel
+
+# Snyk Security Extension - AI Rules (auto-generated)
+.cursor/rules/snyk_rules.mdc
+
+# Database files
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.python-version
+venv/
+env/
+ENV/
